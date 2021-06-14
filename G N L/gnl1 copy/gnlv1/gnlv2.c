@@ -37,7 +37,6 @@ char	*ft_strchr(char *line, char c)
 	return (NULL);
 }
 
-
 size_t	ft_strlen_join(char *str1, char *str2)
 {
 	size_t	j;
@@ -115,6 +114,30 @@ char	*ft_strjoin(char *line, char *str)
 
 int		line_read()
 {
+	int		coinword;
 
+	while ()
+	coinword = read(fd, buff[10], 10);
+	if(coinword == -1)
+		return (-1);
+	buff[coinword] = 0;
 	
+}
+
+
+int		get_next_line(int fd, char **line)
+{
+	static char	*remainder;
+
+	char		buff[10 + 1];
+
+	coinword = 0;
+	if(read(fd, 0, 0) == -1 || !line)
+		return (-1);
+	if (remainder)
+		coinword = line_read(remainder, **line)
+	if (!coinword)
+	{
+
+	}
 }
