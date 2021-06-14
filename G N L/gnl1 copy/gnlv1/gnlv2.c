@@ -70,38 +70,48 @@ char	*ft_newstr(char *line, size_t i)
 	return (str);
 }
 
-char	*ft_strdup(char *str, char *remainder, size_t n)
+char	*ft_strdup(char *str, char *remainder)
 {
 	char	*string;
+	char	*point;
 	size_t	i;
 
+	if(!str)
+		return(NULL);
 	i = ft_strlen_join(str, NULL);
-	string = malloc(sizeof(char) * (i + 1));
-	while (*str != 0)
-		*string++ = *str++;
-	*string = 0;
-	if (n)
+	string = ft_calloc(sizeof(char) * (i + 1));
+	if(!string)
+		return (NULL);
+	p = string;
+	while(*str != 0)
+		*p++ = *str++;
+	*p = 0;
+	if (remainder)
 		free(remainder);
-	return (string - i);
+	return(string);
 }
 
 char	*ft_strjoin(char *line, char *str)
 {
 	size_t	i;
 	char	*string;
+	char	*p;
 
 	if (!line)
 		return (ft_strdup(str));
 	if (!str)
 		return (ft_strdup(line));
-	string = malloc(sizeof(char) (ft_strlen_join(line, str) + 1));
+	i = ft_strlen_join(str, line)
+	string = ft_calloc(i + 1, sizeof(char));
 	if (!string)
-		null
-	while()
-
-	return (string - ft_strlen_join(line, str));
+		return (NULL);
+	p = string;
+	while(*line != 0)
+		*p++ = *line++;
+	while(*str != 0)
+		*p++ = *str++;
+	return (string);
 }
-
 
 int		line_read()
 {
