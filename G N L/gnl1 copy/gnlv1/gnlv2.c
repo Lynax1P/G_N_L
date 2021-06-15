@@ -90,7 +90,7 @@ char	*ft_strdup(char *str, char *remainder)
 	return(string);
 }
 
-char	*ft_strjoin(char *line, char *str)
+char	*ft_strjoin(char *line, char *str, char *frpt)
 {
 	size_t	i;
 	char	*string;
@@ -109,6 +109,8 @@ char	*ft_strjoin(char *line, char *str)
 		*p++ = *line++;
 	while(*str != 0)
 		*p++ = *str++;
+	if (frpt)
+		free(frpt);
 	return (string);
 }
 
@@ -131,33 +133,48 @@ int		check_remainder(char *remainder, char **line, int coin)
 	return (coin);
 }
 
-int		line_read()
+int		line_read(int fd, int **line, char remainder, int coin)
 {
-	int		coinword;
+	char	*point;
 	char	buff[10 + 1];
-
-	while ()
-	coinword = read(fd, buff[10], 10);
-	if(coinword == -1)
-		return (-1);
-	buff[coinword] = 0;
+	ssize_t	count;
+	char	frpt
 	
+	int BUFFER_SIZE = 10;
+	if (*line)
+		frpt = *line;
+	while (coin != 1 && count == BUFFER_SIZE)
+	{
+		count = read(fd, buff[11], 10);
+		if(coinword == -1)
+			return (-1);
+		buff[coinword] = 0;
+		point = ft_strchr(&buff, '\n');
+		if (point)
+		{
+			*point++ = 0;
+			remainder = ft_strdup(point);
+			coin = 1;
+		}
+		*line = ft_strjoin(*line, &buff, frpt)
+	}
+	return (coin);
 }
 
 
 int		get_next_line(int fd, char **line)
 {
 	static char	*remainder;
-
 	int			coinword;
 
 	coinword = 0;
 	if(read(fd, 0, 0) == -1 || !line)
 		return (-1);
+	if (*line)
+		free(*line);
 	if (remainder)
 		check_remainder(remainder, **line, &coinword);
 	if (!coinword)
-	{
-		if
-	}
+		line_read(fd, **line, remainder, coin);
+	return (coin);
 }
