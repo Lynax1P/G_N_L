@@ -195,5 +195,5 @@ int		main()
 		free(line);
 
     }
-	//sleep(100);
+	sleep(100);
 }
