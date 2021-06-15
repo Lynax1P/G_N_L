@@ -112,9 +112,29 @@ char	*ft_strjoin(char *line, char *str)
 	return (string);
 }
 
+int		check_remainder(char *remainder, char **line, int coin)
+{
+	char	*point;
+	char	*frpt;
+	
+	frpt = remainder;
+	if (*line)
+		free(*line);
+	point = ft_strchr(remainde, '\n');
+	if (point)
+	{
+		*point++ = 0;
+		remainder = ft_strdup(point);
+		coin = 1;
+	}
+	*line = ft_strdub(frpt, frpt);
+	return (coin);
+}
+
 int		line_read()
 {
 	int		coinword;
+	char	buff[10 + 1];
 
 	while ()
 	coinword = read(fd, buff[10], 10);
@@ -129,15 +149,15 @@ int		get_next_line(int fd, char **line)
 {
 	static char	*remainder;
 
-	char		buff[10 + 1];
+	int			coinword;
 
 	coinword = 0;
 	if(read(fd, 0, 0) == -1 || !line)
 		return (-1);
 	if (remainder)
-		coinword = line_read(remainder, **line)
+		check_remainder(remainder, **line, &coinword);
 	if (!coinword)
 	{
-
+		if
 	}
 }
