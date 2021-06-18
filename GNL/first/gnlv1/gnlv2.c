@@ -4,6 +4,8 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
+
+
 void	*ft_calloc(size_t nmemb, size_t size)
 {
     void	*calloc;
@@ -40,34 +42,29 @@ char	*ft_strchr(char *line, char c)
 size_t	ft_strlen_join(char *str1, char *str2)
 {
     size_t	j;
+    size_t  i;
 
     j = 0;
-    if (str1)
-        while (*str1++ != 0)
-            j++;
-    if (str2)
-        while (*str2++ != 0)
-            j++;
+    i = 0;
+	if (str1)
+	{	
+		while (str1[i] != 0)
+		{
+			j++;
+			i++;
+		}
+	}
+	i = 0;
+	if (str2)
+	{	
+		while (str2[i] != 0)
+		{
+			j++;
+			i++;
+		}
+	}
     return (j);
-}
-
-char	*ft_newstr(char *line, size_t i)
-{
-    char *str;
-
-    if (ft_strlen_join(line, NULL) == 0)
-        free(line);
-    str = malloc(i + 1);
-    if (!str)
-        return (NULL);
-    while (i != 0)
-    {
-        *str++ = '\0';
-        i--;
-    }
-    *str = 0;
-    return (str);
-}
+} 
 
 char	*ft_strdup(char *str, char *remainder)
 {
@@ -99,7 +96,7 @@ char	*ft_strjoin(char *line, char *str, char *frpt)
     if (ft_strlen_join(line, NULL) == 0)
         return (ft_strdup(str, NULL));
     if (ft_strlen_join(str, NULL) == 0)
-        return (ft_strdup(line, NULL));
+        return (ft_strdup(line, line));
     i = ft_strlen_join(str, line);
     string = ft_calloc(i + 1, sizeof(char));
     if (!string)
@@ -128,23 +125,27 @@ int		check_remainder(char **remainder, char **line, int *coin)
         *coin = 1;
     }
     *line = ft_strdup(frpt, frpt);
+    if (*coin != 1)
+        *coin = 3;
     return (*coin);
 }
+
 
 int		line_read(int fd, char **line, char **remainder, int *coin)
 {
     char	*point;
-    char	buff[1 + 1];
+    char	buff[100000 + 1];
     ssize_t	count;
     char	*frpt;
-
-    int BUFFER_SIZE = 1;
-    count = 1;
+    int     i;
+    int BUFFER_SIZE = 100000;
+    i = 0;
+    count = BUFFER_SIZE;
     while (*coin != 1 && (int)count == BUFFER_SIZE)
     {
-        if (ft_strlen_join(*line, NULL))
+        if (*coin == 3 || i++)
             frpt = *line;
-        count = read(fd, &buff, 1);
+        count = read(fd, &buff, BUFFER_SIZE);
         if (count == -1)
             return (-1);
         buff[count] = 0;
@@ -152,14 +153,13 @@ int		line_read(int fd, char **line, char **remainder, int *coin)
         if (point)
         {
             *point++ = 0;
-            *remainder = ft_strdup(point, NULL);
+            *remainder = ft_strdup(point, *remainder);
             *coin = 1;
         }
         *line = ft_strjoin(*line, buff, frpt);
     }
     return (*coin);
 }
-
 
 int		get_next_line(int fd, char **line)
 {
@@ -169,11 +169,9 @@ int		get_next_line(int fd, char **line)
     coinword = 0;
     if(read(fd, 0, 0) == -1 || !line || fd < 0)
         return (-1);
-    // if (ft_strlen_join(*line, NULL) != 0)
-    //     free(*line);
     if (ft_strlen_join(remainder, NULL))
         check_remainder(&remainder, &*line, &coinword);
-    if (!coinword)
+    if (!coinword || coinword == 3)
         return (line_read(fd, &*line, &remainder, &coinword));
     return (coinword);
 }
@@ -184,7 +182,7 @@ int		main()
     int		fd;
     int		i;
 
-    fd = open("/Users/csherill/Desktop/gnl1/keks.txt", O_RDWR);
+    fd = open("/Users/csherill/Desktop/gnl/keks.txt", O_RDWR);
     i = 1;
     printf("%d\n", fd);
 
@@ -192,8 +190,11 @@ int		main()
     {
         i = get_next_line(fd, &line);
         printf("%s\n", line);
-		free(line);
-
+        free(line);
     }
-	sleep(100);
+    while (1)
+    {
+        /* code */;
+    }
+    
 }
