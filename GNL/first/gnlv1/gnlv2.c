@@ -115,7 +115,7 @@ int		check_remainder(char **remainder, char **line, int *coin)
     char	*point;
     char	*frpt;
 
-	
+	if (ft_strlen_join(*remainder, NULL) == 0)
     frpt = *remainder;
     point = ft_strchr(*remainder, '\n');
     if (point)
@@ -150,6 +150,7 @@ int		line_read(int fd, char **line, char **remainder, int *coin)
 	i = 0;
 	count = BUFFER_SIZE;
 	frpt = NULL;
+    *remainder = NULL;
 	while (*coin != 1 && (int)count == BUFFER_SIZE)
 	{
 		if (*line)
@@ -162,8 +163,11 @@ int		line_read(int fd, char **line, char **remainder, int *coin)
 		if (point)
 		{
 			*point++ = 0;
-			*remainder = ft_strdup(point, *remainder);
-			*coin = 1;
+            if(BUFFER_SIZE > 1)
+			    *remainder = ft_strdup(point, *remainder);
+			else
+                remainder = ft_calloc(0, 0);
+            *coin = 1;
 		}
 		*line = ft_strjoin(*line, buff, frpt);
 	}
@@ -179,7 +183,6 @@ int		get_next_line(int fd, char **line)
 		if (read(fd, 0, 0) == -1 || !line || fd < 0)
 			return (-1);
 	*line = NULL;
-	remainder = NULL;
     if (remainder)
         check_remainder(&remainder, &*line, &coinword);
     if (!coinword || coinword == 3)
