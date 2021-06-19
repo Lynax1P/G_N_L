@@ -4,7 +4,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-
+int BUFFER_SIZE = 1;
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
@@ -130,8 +130,6 @@ int		check_remainder(char **remainder, char **line, int *coin)
     return (*coin);
 }
 
-int BUFFER_SIZE = 1;
-
 void	ft_point(char **point, char **remainder, int *coin)
 {
 	**point++ = 0;
@@ -142,7 +140,7 @@ void	ft_point(char **point, char **remainder, int *coin)
 int		line_read(int fd, char **line, char **remainder, int *coin)
 {
 	char	*point;
-	char	buff[1 + 1];
+	char	buff[BUFFER_SIZE + 1];
 	ssize_t	count;
 	char	*frpt;
 	int		i;
