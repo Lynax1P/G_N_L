@@ -27,7 +27,6 @@ void	*ft_calloc(size_t nmemb, size_t size)
     return (calloc);
 }
 
-
 char	*ft_strchr(char *line, char c)
 {
     while (*line != 0)
@@ -94,7 +93,7 @@ char	*ft_strjoin(char *line, char *str, char *frpt)
     char	*p;
 
     if (ft_strlen_join(line, NULL) == 0)
-        return (ft_strdup(str, NULL));
+        return (ft_strdup(str, line));
     if (ft_strlen_join(str, NULL) == 0)
         return (ft_strdup(line, line));
     i = ft_strlen_join(str, line);
@@ -106,7 +105,7 @@ char	*ft_strjoin(char *line, char *str, char *frpt)
         *p++ = *line++;
     while(*str != 0)
         *p++ = *str++;
-    if (ft_strlen_join(frpt, NULL))
+    if (frpt)
         free(frpt);
     return (string);
 }
@@ -116,6 +115,7 @@ int		check_remainder(char **remainder, char **line, int *coin)
     char	*point;
     char	*frpt;
 
+	
     frpt = *remainder;
     point = ft_strchr(*remainder, '\n');
     if (point)
@@ -130,35 +130,44 @@ int		check_remainder(char **remainder, char **line, int *coin)
     return (*coin);
 }
 
+int BUFFER_SIZE = 1;
+
+void	ft_point(char **point, char **remainder, int *coin)
+{
+	**point++ = 0;
+	*remainder = ft_strdup(*point, *remainder);
+	*coin = 1;
+}
 
 int		line_read(int fd, char **line, char **remainder, int *coin)
 {
-    char	*point;
-    char	buff[100000 + 1];
-    ssize_t	count;
-    char	*frpt;
-    int     i;
-    int BUFFER_SIZE = 100000;
-    i = 0;
-    count = BUFFER_SIZE;
-    while (*coin != 1 && (int)count == BUFFER_SIZE)
-    {
-        if (*coin == 3 || i++)
-            frpt = *line;
-        count = read(fd, &buff, BUFFER_SIZE);
-        if (count == -1)
-            return (-1);
-        buff[count] = 0;
-        point = ft_strchr(buff, '\n');
-        if (point)
-        {
-            *point++ = 0;
-            *remainder = ft_strdup(point, *remainder);
-            *coin = 1;
-        }
-        *line = ft_strjoin(*line, buff, frpt);
-    }
-    return (*coin);
+	char	*point;
+	char	buff[1 + 1];
+	ssize_t	count;
+	char	*frpt;
+	int		i;
+
+	i = 0;
+	count = BUFFER_SIZE;
+	frpt = NULL;
+	while (*coin != 1 && (int)count == BUFFER_SIZE)
+	{
+		if (*line)
+			frpt = *line;
+		count = read(fd, &buff, BUFFER_SIZE);
+		if (count == -1)
+			return (-1);
+		buff[count] = 0;
+		point = ft_strchr(buff, '\n');
+		if (point)
+		{
+			*point++ = 0;
+			*remainder = ft_strdup(point, *remainder);
+			*coin = 1;
+		}
+		*line = ft_strjoin(*line, buff, frpt);
+	}
+	return (*coin);
 }
 
 int		get_next_line(int fd, char **line)
@@ -167,12 +176,18 @@ int		get_next_line(int fd, char **line)
     int			coinword;
 
     coinword = 0;
-    if(read(fd, 0, 0) == -1 || !line || fd < 0)
-        return (-1);
-    if (ft_strlen_join(remainder, NULL))
+		if (read(fd, 0, 0) == -1 || !line || fd < 0)
+			return (-1);
+	*line = NULL;
+	remainder = NULL;
+    if (remainder)
         check_remainder(&remainder, &*line, &coinword);
     if (!coinword || coinword == 3)
-        return (line_read(fd, &*line, &remainder, &coinword));
+	{
+		if(line_read(fd, &*line, &remainder, &coinword) == 3)
+			return (0);
+		return (coinword);
+	}
     return (coinword);
 }
 
@@ -182,19 +197,19 @@ int		main()
     int		fd;
     int		i;
 
-    fd = open("/Users/csherill/Desktop/gnl/keks.txt", O_RDWR);
+    fd = open("keks.txt", O_RDWR);
     i = 1;
     printf("%d\n", fd);
-
-    while(i != 0)
-    {
-        i = get_next_line(fd, &line);
-        printf("%s\n", line);
-        free(line);
-    }
-    while (1)
-    {
-        /* code */;
-    }
+	while(i != 0 && i != 3 && i != -1)
+	{
+		i = get_next_line(fd, &line);
+	//	printf("%d\n", i);
+		printf("%s\n", line);
+		free(line);
+	}
+    // while (1)
+    // {
+    //     /* code */;
+    // }
     
 }
