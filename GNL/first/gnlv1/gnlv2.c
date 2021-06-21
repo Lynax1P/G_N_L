@@ -40,11 +40,11 @@ char	*ft_strchr(char *line, char c)
 
 size_t	ft_strlen_join(char *str1, char *str2)
 {
-    size_t	j;
-    size_t  i;
+	size_t	j;
+	size_t  i;
 
-    j = 0;
-    i = 0;
+	j = 0;
+	i = 0;
 	if (str1)
 	{	
 		while (str1[i] != 0)
@@ -62,28 +62,28 @@ size_t	ft_strlen_join(char *str1, char *str2)
 			i++;
 		}
 	}
-    return (j);
+	return (j);
 } 
 
 char	*ft_strdup(char *str, char *remainder)
 {
-    char	*string;
-    char	*point;
-    size_t	i;
+	char	*string;
+	char	*point;
+	size_t	i;
 
-    if(!str)
-        return(NULL);
-    i = ft_strlen_join(str, NULL);
-    string = ft_calloc((i + 1), sizeof(char));
-    if(!string)
-        return (NULL);
-    point = string;
-    while(*str != 0)
-        *point++ = *str++;
-    *point = 0;
-    if (remainder)
-        free(remainder);
-    return(string);
+	if(!str)
+		return(NULL);
+	i = ft_strlen_join(str, NULL);
+	string = ft_calloc((i + 1), sizeof(char));
+	if(!string)
+		return (NULL);
+	point = string;
+	while(*str != 0)
+		*point++ = *str++;
+	*point = 0;
+	if (remainder)
+		free(remainder);
+	return(string);
 }
 
 char	*ft_strjoin(char *line, char *str, char *frpt)
@@ -116,6 +116,7 @@ int		check_remainder(char **remainder, char **line, int *coin)
     char	*frpt;
 
 	if (ft_strlen_join(*remainder, NULL) == 0)
+        return (0);
     frpt = *remainder;
     point = ft_strchr(*remainder, '\n');
     if (point)
@@ -143,12 +144,9 @@ int		line_read(int fd, char **line, char **remainder, int *coin)
 	char	buff[BUFFER_SIZE + 1];
 	ssize_t	count;
 	char	*frpt;
-	int		i;
 
-	i = 0;
 	count = BUFFER_SIZE;
 	frpt = NULL;
-    *remainder = NULL;
 	while (*coin != 1 && (int)count == BUFFER_SIZE)
 	{
 		if (*line)
@@ -206,7 +204,7 @@ int		main()
 		i = get_next_line(fd, &line);
 	//	printf("%d\n", i);
 		printf("%s\n", line);
-		free(line);
+	//  free(line);
 	}
     // while (1)
     // {
