@@ -5,6 +5,8 @@ size_t	ft_strlen_join(char *str1, char *str2)
 	size_t	j;
 	size_t  i;
 
+	if (!str1)
+		return (0);
 	j = 0;
 	i = 0;
 	if (str1)
@@ -49,32 +51,31 @@ char	*ft_strdup(char *str, int *n)
 	return(string);
 }
 
-char	*ft_join(char **line, char **buf, int *n)
+char	*ft_join(char **line, char **buf)
 {
 	int		i;
 	char	*string;
 	char	*point;
 	int 	y;
+	int		n;
 
+	n = 0;
 	if (!*line || ft_strlen_join(*line, NULL))
-		return (ft_strdup(*buf, n));
+		return (ft_strdup(*buf, &n));
 	i = ft_strlen_join(*line, *buf);
 	string = malloc(sizeof(char) * (i + 1));
 	if (!string)
-	{
-		*n = -1;
 		return (NULL);
-	}
 	point = *line;
 	y = 0;
 	while (i--)
 	{
-		string[*n++] = point[y++];
+		string[n++] = point[y++];
 		if (point[y] == 0)
 			y = 0;
 		if (y == 0)
 			point = *buf;
 	}
-	string[*n] = 0;
+	string[n] = 0;
 	return (string);
 }

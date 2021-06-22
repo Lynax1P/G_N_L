@@ -176,8 +176,8 @@ int		get_next_line(int fd, char **line)
     int			coinword;
 
     coinword = 0;
-		if (read(fd, 0, 0) == -1 || !line || fd < 0)
-			return (-1);
+	if (read(fd, 0, 0) == -1 || !line || fd < 0)
+		return (-1);
 	*line = NULL;
     if (remainder)
         check_remainder(&remainder, &*line, &coinword);
@@ -199,13 +199,14 @@ int		main()
     fd = open("keks.txt", O_RDWR);
     i = 1;
     printf("%d\n", fd);
-	while(i != 0 && i != 3 && i != -1)
-	{
+	// while (i != 0 && i != 3 && i != -1)
+	// {
+        		printf("%d\n", i);
 		i = get_next_line(fd, &line);
-	//	printf("%d\n", i);
+		printf("%d\n", i);
 		printf("%s\n", line);
 	//  free(line);
-	}
+	// }
     // while (1)
     // {
     //     /* code */;
