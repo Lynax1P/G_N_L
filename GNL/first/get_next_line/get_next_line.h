@@ -1,11 +1,10 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUFFER_SIZE 3
+// # define BUFFER_SIZE 3
 
 # include <stdio.h>
 # include <unistd.h>
-# include <string.h>
 # include <fcntl.h>
 # include <stdlib.h>
 
