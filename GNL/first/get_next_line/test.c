@@ -27,10 +27,9 @@ int main()
     char buf[10 + 1];
     int n;
 	char *point;
-	printf("%d\n", fd);
+
 	point = &(*buf);
 	printf("%zd\n", ft_buffer(&point, fd));
-	buf[10] = 0;
    	printf ("%s\n", buf);
 	//free(buf);
     
