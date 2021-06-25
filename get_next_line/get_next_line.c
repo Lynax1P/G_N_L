@@ -1,6 +1,6 @@
 #include "get_next_line.h"
 
-int	ft_remainder(char **buf, char **ram)
+int	ft_delimiter(char **str1, char **str2)
 {
 	int	n;
 	int	i;
@@ -8,21 +8,21 @@ int	ft_remainder(char **buf, char **ram)
 
 	i = 0;
 	n = 0;
-	size = ft_strlen_join(*buf, NULL);
-	while (*(*buf + i) != 0)
+	size = ft_strlen_join(*str1, NULL);
+	while (*(*str1 + i) != 0)
 	{
-		if (*(*buf + i) == '\n')
+		if (*(*str1 + i) == '\n')
 			n = 1;
 		if (n == 1)
-			*(*buf + i) = 0;
+			*(*str1 + i) = 0;
 		i++;
 		if (n == 1)
 			break ;
 	}
 	if (n > 0 && i < size)
-		*ram = ft_strdup(*buf + i, &n);
+		*str2 = ft_strdup(*str1 + i, &n);
 	else
-		*ram = NULL;
+		*str2 = NULL;
 	return (n);
 }
 
@@ -57,7 +57,7 @@ int	line_read(int fd, char **line, char **ram)
 		res = ft_buffer(&point, fd);
 		if (res == -1)
 			return (-1);
-		n = ft_remainder(&point, ram);
+		n = ft_delimiter(&point, ram);
 		if (n == -1)
 			return (-1);
 		pline = *line;
@@ -76,7 +76,7 @@ int	check_remainder(int fd, char **line, char **ram)
 	char	*point;
 
 	point = *ram;
-	n = ft_remainder(ram, ram);
+	n = ft_delimiter(ram, ram);
 	if (n == -1)
 		return (-1);
 	*line = ft_join(&*line, &point);
