@@ -1,4 +1,4 @@
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static	int	ft_delimiter(char **str1, char **str2)
 {
@@ -75,6 +75,8 @@ static	int	check_remainder(int fd, char **line, char **ram)
 	int		n;
 	char	*point;
 
+	if (ft_strlen_join(*ram , NULL) == 0)
+		return (line_read(fd, &*line, &*ram));
 	point = *ram;
 	n = ft_delimiter(ram, ram);
 	if (n == -1)
@@ -93,12 +95,42 @@ static	int	check_remainder(int fd, char **line, char **ram)
 
 int	get_next_line(int fd, char **line)
 {
-	static char	*ram = NULL;
+	static char	*ram[10000];
 
 	if (fd < 0 || read(fd, 0, 0) == -1 || !line || BUFFER_SIZE < 1)
 		return (-1);
 	*line = NULL;
-	if (ram)
-		return (check_remainder(fd, &*line, &ram));
-	return (line_read(fd, &*line, &ram));
+	if (ram[fd])
+		return (check_remainder(fd, &*line, &ram[fd]));
+	return (line_read(fd, &*line, &ram[fd]));
 }
+
+// int main()
+// {
+// 	int fd = open("keks.txt", O_RDWR);
+// 	int ds = open("lols.txt", O_RDWR);
+// 	char	*line; 
+// 	int i = 1;
+// 	int j = 1;
+// 
+// 	while (i != 0 && j != 0)
+// 	{
+// 		if (i)
+// 		{
+// 			i = get_next_line(fd, &line);
+// 			printf("%s\n", line);
+// 			free(line);
+// 		}
+// 		if (j)
+// 		{
+// 			j = get_next_line(ds, &line);
+// 			printf("%s\n", line);
+// 			free(line);
+// 		}
+// 	}
+// 	while (1)
+// 	{
+// 		/* code */
+// 	}
+// 
+// }
